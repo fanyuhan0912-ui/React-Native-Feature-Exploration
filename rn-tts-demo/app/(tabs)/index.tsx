@@ -1,98 +1,144 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Platform } from "react-native";
+import * as Speech from "expo-speech";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const DRAFT_KEY = "tts_text_draft_v1";
 
-export default function HomeScreen() {
+export default function App() {
+  const [text, setText] = useState("Hello! This is a Text to Speech demo.");
+  const [pitch, setPitch] = useState(1.0);
+  const [rate, setRate] = useState(1.0);
+  const [speaking, setSpeaking] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const saved = await AsyncStorage.getItem(DRAFT_KEY);
+      if (saved) setText(saved);
+    })();
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem(DRAFT_KEY, text).catch(() => {});
+  }, [text]);
+
+  const speak = () => {
+    if (!text.trim()) return;
+    setSpeaking(true);
+    Speech.speak(text.trim(), {
+      language: "en-US",
+      pitch,
+      rate: Platform.OS === "ios" ? rate : Math.min(rate, 1.5),
+      onDone: () => setSpeaking(false),
+      onStopped: () => setSpeaking(false),
+      onError: () => setSpeaking(false),
+    });
+  };
+
+  const stop = () => {
+    Speech.stop();
+    setSpeaking(false);
+  };
+
+  const bump = (setter: any, val: number, min: number, max: number) => {
+    setter((prev: number) => {
+      const next = Math.max(min, Math.min(max, Number((prev + val).toFixed(2))));
+      return next;
+    });
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={{ flex: 1, backgroundColor: "#fff", paddingTop: 70, paddingHorizontal: 18 }}>
+      <Text style={{ fontSize: 22, fontWeight: "700", marginBottom: 8 }}>Text to Speech Demo</Text>
+      <Text style={{ color: "#666", marginBottom: 16 }}>
+        Type some text and let the device read it aloud. Adjust pitch and rate to hear the difference.
+      </Text>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <Text style={{ fontWeight: "600" }}>Text</Text>
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        placeholder="Enter text to speak..."
+        multiline
+        style={{
+          marginTop: 6,
+          borderWidth: 1,
+          borderColor: "#ddd",
+          borderRadius: 10,
+          padding: 12,
+          height: 140,
+          textAlignVertical: "top",
+          fontSize: 16,
+          backgroundColor: "#fafafa",
+        }}
+      />
+
+
+      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
+        <Text style={{ width: 70, fontWeight: "600" }}>Pitch</Text>
+        <TouchableOpacity
+          onPress={() => bump(setPitch, -0.1, 0.5, 2.0)}
+          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginRight: 8 }}
+        >
+          <Text>-</Text>
+        </TouchableOpacity>
+        <Text style={{ width: 60, textAlign: "center" }}>{pitch.toFixed(2)}</Text>
+        <TouchableOpacity
+          onPress={() => bump(setPitch, +0.1, 0.5, 2.0)}
+          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginLeft: 8 }}
+        >
+          <Text>+</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Rate*/}
+      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
+        <Text style={{ width: 70, fontWeight: "600" }}>Rate</Text>
+        <TouchableOpacity
+          onPress={() => bump(setRate, -0.1, 0.1, 2.0)}
+          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginRight: 8 }}
+        >
+          <Text>-</Text>
+        </TouchableOpacity>
+        <Text style={{ width: 60, textAlign: "center" }}>{rate.toFixed(2)}</Text>
+        <TouchableOpacity
+          onPress={() => bump(setRate, +0.1, 0.1, 2.0)}
+          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginLeft: 8 }}
+        >
+          <Text>+</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* button */}
+      <View style={{ flexDirection: "row", marginTop: 20 }}>
+        <TouchableOpacity
+          onPress={speak}
+          disabled={speaking || !text.trim()}
+          style={{
+            backgroundColor: speaking || !text.trim() ? "#cbd3ff" : "#2f6fed",
+            paddingVertical: 12,
+            paddingHorizontal: 18,
+            borderRadius: 10,
+            marginRight: 10,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "700" }}>{speaking ? "Speaking..." : "Speak"}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={stop}
+          style={{
+            backgroundColor: "#ff6b6b",
+            paddingVertical: 12,
+            paddingHorizontal: 18,
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "700" }}>Stop</Text>
+        </TouchableOpacity>
+      </View>
+
+
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
