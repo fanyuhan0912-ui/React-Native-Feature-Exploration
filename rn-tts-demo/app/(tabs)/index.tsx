@@ -139,9 +139,9 @@ export default function App() {
       </View>
 
       {/* note*/}
-//       <Text style={{ marginTop: 12, color: "#888" }}>
-//         Tip: Different platforms and voices may sound slightly different. Try changing pitch and rate.
-//       </Text>
+      <Text style={{ marginTop: 12, color: "#888" }}>
+        Tip: Different platforms and voices may sound slightly different. Try changing pitch and rate.
+      </Text>
     </View>
   );
 }
