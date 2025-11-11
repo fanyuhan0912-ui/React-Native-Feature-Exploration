@@ -73,7 +73,7 @@ export default function App() {
         }}
       />
 
-
+      {/* Pitch */}
       <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
         <Text style={{ width: 70, fontWeight: "600" }}>Pitch</Text>
         <TouchableOpacity
@@ -109,7 +109,7 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      {/* button */}
+      {/* button*/}
       <View style={{ flexDirection: "row", marginTop: 20 }}>
         <TouchableOpacity
           onPress={speak}
@@ -138,7 +138,10 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-
+      {/* note*/}
+//       <Text style={{ marginTop: 12, color: "#888" }}>
+//         Tip: Different platforms and voices may sound slightly different. Try changing pitch and rate.
+//       </Text>
     </View>
   );
 }
