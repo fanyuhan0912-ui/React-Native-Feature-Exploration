@@ -69,13 +69,13 @@ export default function App() {
           height: 140,
           textAlignVertical: "top",
           fontSize: 16,
-          backgroundColor: "#D4E6DC",
+          backgroundColor: "#EDF7F1",
         }}
       />
 
       {/* Pitch */}
-   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
+   <View style={{justifyContent: "center", alignItems: "center", marginTop:20 }}>
+     <View style={{ flexDirection: "row", alignItems: "center"}}>
        <Text style={{ width: 70, fontWeight: "600",color:"#A4734C" }}>Pitch</Text>
        <TouchableOpacity
          onPress={() => bump(setPitch, -0.1, 0.5, 2.0)}
@@ -84,6 +84,7 @@ export default function App() {
            paddingVertical: 6,
            borderWidth: 3,
            borderColor: "#ddd",
+           backgroundColor:"#EDF7F1",
            borderRadius: 8,
            marginRight: 8,
          }}
@@ -98,6 +99,7 @@ export default function App() {
            paddingVertical: 6,
            borderWidth: 3,
            borderColor: "#ddd",
+           backgroundColor:"#EDF7F1",
            borderRadius: 8,
            marginLeft: 8,
          }}
@@ -109,22 +111,57 @@ export default function App() {
 
 
       {/* Rate*/}
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
-        <Text style={{ width: 70, fontWeight: "600" }}>Rate</Text>
-        <TouchableOpacity
-          onPress={() => bump(setRate, -0.1, 0.1, 2.0)}
-          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginRight: 8 }}
-        >
-          <Text>-</Text>
-        </TouchableOpacity>
-        <Text style={{ width: 60, textAlign: "center" }}>{rate.toFixed(2)}</Text>
-        <TouchableOpacity
-          onPress={() => bump(setRate, +0.1, 0.1, 2.0)}
-          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginLeft: 8 }}
-        >
-          <Text>+</Text>
-        </TouchableOpacity>
-      </View>
+<View
+  style={{
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  }}
+>
+  <Text
+    style={{
+      width: 70,
+      fontWeight: "600",
+      color: "#A4734C",
+    }}
+  >
+    Rate
+  </Text>
+
+  <TouchableOpacity
+    onPress={() => bump(setRate, -0.1, 0.1, 2.0)}
+    style={{
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderWidth: 3,
+      borderColor: "#ddd",
+      borderRadius: 8,
+      backgroundColor: "#EDF7F1",
+      marginRight: 8,
+    }}
+  >
+    <Text>-</Text>
+  </TouchableOpacity>
+
+  <Text style={{ width: 60, textAlign: "center" }}>{rate.toFixed(2)}</Text>
+
+  <TouchableOpacity
+    onPress={() => bump(setRate, +0.1, 0.1, 2.0)}
+    style={{
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderWidth: 3,
+      borderColor: "#ddd",
+      backgroundColor: "#EDF7F1",
+      borderRadius: 8,
+      marginLeft: 8,
+    }}
+  >
+    <Text>+</Text>
+  </TouchableOpacity>
+</View>
+
 
       {/* button*/}
       <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "center", alignItems: "center" }}>
@@ -155,7 +192,7 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      {/* note*/}
+
     </View>
   );
 }
