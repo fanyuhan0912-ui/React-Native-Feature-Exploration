@@ -48,10 +48,10 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff", paddingTop: 70, paddingHorizontal: 18 }}>
-      <Text style={{ fontSize: 22, fontWeight: "700", marginBottom: 8 }}>Text to Speech Demo</Text>
-      <Text style={{ color: "#666", marginBottom: 16 }}>
-        Type some text and let the device read it aloud. Adjust pitch and rate to hear the difference.
+    <View style={{ flex: 1, backgroundColor: "#D4E6DC", paddingTop: 70, paddingHorizontal: 18 }}>
+      <Text style={{ fontSize: 22, fontWeight: 800, marginBottom: 20,  textAlign: "center",color:"#A4734C"  }}>Text to Speech Demo</Text>
+      <Text style={{ color: "#A4734C", marginBottom: 16,  textAlign: "center" }}>
+        Type some text and let the device read it aloud. You can change the Pitch and Rate of it to make the voice to be difference.
       </Text>
 
       <Text style={{ fontWeight: "600" }}>Text</Text>
@@ -69,7 +69,7 @@ export default function App() {
           height: 140,
           textAlignVertical: "top",
           fontSize: 16,
-          backgroundColor: "#fafafa",
+          backgroundColor: "#D4E6DC",
         }}
       />
 
