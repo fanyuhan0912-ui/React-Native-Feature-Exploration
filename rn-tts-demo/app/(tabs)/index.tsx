@@ -54,7 +54,7 @@ export default function App() {
         Type some text and let the device read it aloud. You can change the Pitch and Rate of it to make the voice to be difference.
       </Text>
 
-      <Text style={{ fontWeight: "600" }}>Text</Text>
+      <Text style={{ fontWeight: "600",color:"#A4734C" }}>Text</Text>
       <TextInput
         value={text}
         onChangeText={setText}
@@ -74,22 +74,39 @@ export default function App() {
       />
 
       {/* Pitch */}
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
-        <Text style={{ width: 70, fontWeight: "600" }}>Pitch</Text>
-        <TouchableOpacity
-          onPress={() => bump(setPitch, -0.1, 0.5, 2.0)}
-          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginRight: 8 }}
-        >
-          <Text>-</Text>
-        </TouchableOpacity>
-        <Text style={{ width: 60, textAlign: "center" }}>{pitch.toFixed(2)}</Text>
-        <TouchableOpacity
-          onPress={() => bump(setPitch, +0.1, 0.5, 2.0)}
-          style={{ paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginLeft: 8 }}
-        >
-          <Text>+</Text>
-        </TouchableOpacity>
-      </View>
+   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}>
+       <Text style={{ width: 70, fontWeight: "600",color:"#A4734C" }}>Pitch</Text>
+       <TouchableOpacity
+         onPress={() => bump(setPitch, -0.1, 0.5, 2.0)}
+         style={{
+           paddingHorizontal: 12,
+           paddingVertical: 6,
+           borderWidth: 3,
+           borderColor: "#ddd",
+           borderRadius: 8,
+           marginRight: 8,
+         }}
+       >
+         <Text>-</Text>
+       </TouchableOpacity>
+       <Text style={{ width: 60, textAlign: "center" }}>{pitch.toFixed(2)}</Text>
+       <TouchableOpacity
+         onPress={() => bump(setPitch, +0.1, 0.5, 2.0)}
+         style={{
+           paddingHorizontal: 12,
+           paddingVertical: 6,
+           borderWidth: 3,
+           borderColor: "#ddd",
+           borderRadius: 8,
+           marginLeft: 8,
+         }}
+       >
+         <Text>+</Text>
+       </TouchableOpacity>
+     </View>
+   </View>
+
 
       {/* Rate*/}
       <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
@@ -110,7 +127,7 @@ export default function App() {
       </View>
 
       {/* button*/}
-      <View style={{ flexDirection: "row", marginTop: 20 }}>
+      <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity
           onPress={speak}
           disabled={speaking || !text.trim()}
@@ -139,9 +156,6 @@ export default function App() {
       </View>
 
       {/* note*/}
-      <Text style={{ marginTop: 12, color: "#888" }}>
-        Tip: Different platforms and voices may sound slightly different. Try changing pitch and rate.
-      </Text>
     </View>
   );
 }
